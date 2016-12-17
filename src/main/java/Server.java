@@ -10,6 +10,7 @@ public class Server {
 
     private CommandParser commandParser = CommandParser.getInstance();
     public static final String ERROR_RESPONSE = "error";
+    public static final String OK_RESPONSE = "ok";
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");

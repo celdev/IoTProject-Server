@@ -1,16 +1,18 @@
-import java.nio.charset.Charset;
-
 public class CommandParser {
 
 	private static CommandParser instance;
 
-	private String[] conditionWords = { " när ", " om " };
-	private String[] onWord = { "sätt på", "tänd" };
-	private String[] offWord = { "stäng av", "släck" };
+	private String[] conditionWords = {" när ", " om "};
+    private String[] onWord = {"sätt på", "tänd"};
+    private String[] offWord = {"stäng av", "släck"};
 
     private String nameOfUnit1 = "lampa";
     private String nameOfUnit2 = "värme";
     private String ifWord = " om ";
+
+    private static final String lessThanWord = " mindre ";
+    private static final String greaterThanWord = " mer ";
+    private static final String equalWord = " är ";
 
 	private CommandParser() {
 	}
@@ -24,9 +26,7 @@ public class CommandParser {
 
 	public String parseCommand(String command) {
 		try {
-			System.out.println("Trying to parse command = " + command);
 			CommandType commandType = extractCommandType(command);
-			System.out.println("Extracted command type = " + commandType);
 			if (commandType == null) {
 				return Server.ERROR_RESPONSE;
 			}
@@ -75,14 +75,9 @@ public class CommandParser {
     }
 
     private int extractTemperatureFromString(String temperature) throws NumberFormatException {
-        System.out.println("trying to parse int temperature from " + temperature + " it contains dot = " + temperature.contains("."));
         return Integer.parseInt(temperature.substring(0, temperature.indexOf(".")));
     }
 
-    public static void main(String[] args) {
-        CommandParser commandParser = CommandParser.getInstance();
-        System.out.println("c " + commandParser.extractTemperatureFromString("24.7°"));
-    }
 
 	private String runIfCommand(int deviceID, int targetTemperature, ConditionType conditionType, State state) {
 		String temperature = IoTSensorDeviceHandler.getInstance().getTemperature();
@@ -90,7 +85,6 @@ public class CommandParser {
 			int intTemperature = extractTemperatureFromString(temperature);
 			if (compare(intTemperature, targetTemperature, conditionType)) {
 				try {
-					System.out.println("if condition was true, executing command");
 					ActionExecutor.getInstance().executeAction(new Action(deviceID, state));
 					return "true";
 				} catch (Exception e) {
@@ -115,11 +109,11 @@ public class CommandParser {
     }
 
     private ConditionType extractCondition(String command) throws IllegalArgumentException {
-        if (command.contains(" mer ")) {
+        if (command.contains(greaterThanWord)) {
             return ConditionType.GREATER_THAN;
-        } else if (command.contains(" mindre ")) {
+        } else if (command.contains(lessThanWord)) {
             return ConditionType.LESS_THAN;
-        } else if (command.contains("är")) {
+        } else if (command.contains(equalWord)) {
             return ConditionType.EQUAL;
         }
         throw new IllegalArgumentException();
@@ -145,11 +139,6 @@ public class CommandParser {
     }
 
 	private State extractState(String command) {
-		System.out.println("Trying to extract state from " + command);
-		// System.out.println("" + command + " contains " + onWord + " = " +
-		// command.contains(onWord));
-		// System.out.println("" + command + " contains " + offWord + " = " +
-		// command.contains(offWord));
 		for (String on : onWord) {
 			if (command.contains(on)) {
 				return State.ON;
@@ -165,15 +154,13 @@ public class CommandParser {
 
 	private String parseSimpleCommand(String command) {
 		State state = extractState(command);
-		System.out.println("Extracted state = " + state);
 		if (state != null) {
 			try {
 				int deviceID = extractDeviceID(command);
-				System.out.println("Extracted device id = " + deviceID);
 				try {
-					String response = ActionExecutor.getInstance().executeAction(new Action(deviceID, state));
-					System.out.println("executed action and got response = " + response);
-				} catch (Exception e) {
+                    System.out.println("executed: " + ActionExecutor.getInstance().executeAction(new Action(deviceID, state)));
+                    return Server.OK_RESPONSE;
+                } catch (Exception e) {
 					e.printStackTrace();
 				}
 			} catch (IllegalArgumentException e) {
