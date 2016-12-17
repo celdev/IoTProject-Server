@@ -1,4 +1,4 @@
-public class Device extends IoTUnit implements Switchable {
+public class Device extends IoTUnit {
 
     private State deviceState;
     private String name;
@@ -7,11 +7,6 @@ public class Device extends IoTUnit implements Switchable {
         super(id);
         this.deviceState = deviceState;
         this.name = name;
-    }
-
-    @Override
-    public State getDeviceState() {
-        return null;
     }
 
     @Override
