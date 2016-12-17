@@ -1,3 +1,8 @@
+package model;
+
+import model.Action;
+import model.Condition;
+
 public class SensorCondition extends Condition {
 
     public SensorCondition(String command, Action action) {

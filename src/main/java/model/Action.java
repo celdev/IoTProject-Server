@@ -1,3 +1,8 @@
+package model;
+
+import model.Device;
+import model.State;
+
 public class Action {
 
     private static final String TOOL_NAME = "tdtool";
@@ -7,15 +12,15 @@ public class Action {
         this.command = TOOL_NAME + " " + state.getArgument() + " " + device.getId();
     }
 
-    Action(int deviceID, State state) {
+    public Action(int deviceID, State state) {
         this.command = TOOL_NAME + " " + state.getArgument() + " " + deviceID;
     }
 
-    Action() {
+    public Action() {
         this.command = TOOL_NAME + " -l";
     }
 
-    String getCommand() {
+    public String getCommand() {
         return command;
     }
 }

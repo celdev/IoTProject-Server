@@ -1,5 +1,8 @@
+import infohandlers.IoTInformationHandler;
+import parsers.*;
 import spark.Request;
 import spark.Response;
+import util.Constants;
 
 import java.util.Optional;
 
@@ -8,8 +11,6 @@ import static spark.Spark.*;
 public class Server {
 
     private CommandParserInterface commandParser;
-    static final String ERROR_RESPONSE = "error";
-    static final String OK_RESPONSE = "ok";
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -34,14 +35,16 @@ public class Server {
     private void setParser(String language) {
         Optional<CommandParser> optional;
         switch (language) {
+            case "TH":
+                optional = ThaiCommandParser.commandParserBuilder();
             case "EN":
-                optional = EngCommandParser.EnglishCommandParserBuilder();
+                optional = EngCommandParser.commandParserBuilder();
                 break;
             case "SE":
-                optional = SweCommandParser.SwedishCommandParserBuilder();
+                optional = SweCommandParser.commandParserBuilder();
                 break;
             default:
-                optional = SweCommandParser.SwedishCommandParserBuilder();
+                optional = SweCommandParser.commandParserBuilder();
         }
         if (optional.isPresent()) {
             commandParser = optional.get();
@@ -61,7 +64,7 @@ public class Server {
         String command = request.splat()[0];
         System.out.println("got command " + command);
         if (command == null || command.trim().isEmpty()) {
-            return ERROR_RESPONSE;
+            return Constants.ERROR_RESPONSE;
         }
         response.type("text/plain");
         return commandParser.parseCommand(command.toLowerCase().replace("_", " ").trim());

@@ -1,6 +1,17 @@
+package parsers;
+
+import executors.ActionExecutor;
+import infohandlers.IoTSensorDeviceHandler;
+import infohandlers.ThreadHandler;
+import model.Action;
+import model.Condition;
+import model.State;
+import util.Constants;
+import util.InformationExtractor;
+
 import java.util.Optional;
 
-public class CommandParser implements CommandParserInterface{
+public class CommandParser implements CommandParserInterface {
 
     private final String[] conditionWords;
     private final String[] onWords;
@@ -14,7 +25,7 @@ public class CommandParser implements CommandParserInterface{
     private final String greaterThanWord;
     private final String equalWord;
 
-    CommandParser(Builder builder) {
+    public CommandParser(Builder builder) {
         this.conditionWords = builder.bConditionWords;
         this.onWords = builder.bOnWords;
         this.offWords = builder.bOffWords;
@@ -26,22 +37,6 @@ public class CommandParser implements CommandParserInterface{
         this.equalWord = builder.bEqualWord;
     }
 
-
-    private boolean compare(int now, int target, SweCommandParser.ConditionType conditionType) {
-        switch (conditionType) {
-            case EQUAL:
-                return now == target;
-            case LESS_THAN:
-                return now < target;
-            case GREATER_THAN:
-                return now > target;
-        }
-        return true;
-    }
-
-    private enum CommandType {
-        SIMPLE, CONDITION
-    }
 
     private CommandType extractCommandType(String command) {
         for (String s : conditionWords) {
@@ -59,16 +54,16 @@ public class CommandParser implements CommandParserInterface{
                 int deviceID = extractDeviceID(command);
                 try {
                     System.out.println("executed: " + ActionExecutor.getInstance().executeAction(new Action(deviceID, state)));
-                    return Server.OK_RESPONSE;
+                    return Constants.OK_RESPONSE;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-                return Server.ERROR_RESPONSE;
+                return Constants.ERROR_RESPONSE;
             }
         }
-        return Server.ERROR_RESPONSE;
+        return Constants.ERROR_RESPONSE;
     }
 
     private int extractDeviceID(String command) throws IllegalArgumentException {
@@ -100,7 +95,7 @@ public class CommandParser implements CommandParserInterface{
         if (state != null) {
             try {
                 int deviceID = extractDeviceID(command);
-                int targetTemperature = extractTemperature(command);
+                int targetTemperature = InformationExtractor.extractTemperature(command);
                 ConditionType condition = extractCondition(command);
                 if (command.contains(ifWord)) {
                     return runIfCommand(deviceID,targetTemperature,condition, state);
@@ -110,8 +105,8 @@ public class CommandParser implements CommandParserInterface{
                         public boolean conditionIsTrue() {
                             String temperature = IoTSensorDeviceHandler.getInstance().getTemperature();
                             if (temperature != null) {
-                                int intTemperature = extractTemperatureFromString(temperature);
-                                if (compare(intTemperature, targetTemperature, condition)) {
+                                int intTemperature = InformationExtractor.extractTemperatureFromTemperatureString(temperature);
+                                if (condition.compare(intTemperature, targetTemperature)) {
                                     return true;
                                 }
                             }
@@ -125,7 +120,7 @@ public class CommandParser implements CommandParserInterface{
                 e.printStackTrace();
             }
         }
-        return Server.ERROR_RESPONSE;
+        return Constants.ERROR_RESPONSE;
     }
 
     @Override
@@ -133,7 +128,7 @@ public class CommandParser implements CommandParserInterface{
         try {
             CommandType commandType = extractCommandType(command);
             if (commandType == null) {
-                return Server.ERROR_RESPONSE;
+                return Constants.ERROR_RESPONSE;
             }
             if (commandType.equals(CommandType.SIMPLE)) {
                 return parseSimpleCommand(command);
@@ -143,7 +138,7 @@ public class CommandParser implements CommandParserInterface{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Server.ERROR_RESPONSE;
+        return Constants.ERROR_RESPONSE;
     }
 
 
@@ -153,14 +148,14 @@ public class CommandParser implements CommandParserInterface{
     private String runIfCommand(int deviceID, int targetTemperature, ConditionType conditionType, State state) {
         String temperature = IoTSensorDeviceHandler.getInstance().getTemperature();
         if (temperature != null) {
-            int intTemperature = extractTemperatureFromString(temperature);
-            if (compare(intTemperature, targetTemperature, conditionType)) {
+            int intTemperature = InformationExtractor.extractTemperatureFromTemperatureString(temperature);
+            if (conditionType.compare(intTemperature, targetTemperature)) {
                 try {
                     ActionExecutor.getInstance().executeAction(new Action(deviceID, state));
                     return "true";
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return Server.ERROR_RESPONSE;
+                    return Constants.ERROR_RESPONSE;
                 }
             }
         }
@@ -180,29 +175,8 @@ public class CommandParser implements CommandParserInterface{
         throw new IllegalArgumentException();
     }
 
-    private int extractTemperature(String command) throws IllegalArgumentException{
-        String intValue = command.replaceAll("[^0-9]", "");
-        try {
-            return Integer.parseInt(intValue);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException();
-        }
-    }
 
-
-
-    enum ConditionType {
-        LESS_THAN, EQUAL, GREATER_THAN
-    }
-
-
-    private int extractTemperatureFromString(String temperature) throws NumberFormatException {
-        return Integer.parseInt(temperature.substring(0, temperature.indexOf(".")));
-    }
-
-
-    public static class Builder{
+    public static class Builder {
 
         private String[] bConditionWords;
         private String[] bOnWords;

@@ -1,4 +1,6 @@
-abstract class Condition {
+package model;
+
+public abstract class Condition {
 
     private final String command;
     private final Action action;

@@ -1,17 +1,19 @@
-abstract class IoTUnit {
+package model;
+
+public abstract class IoTUnit {
 
     private final int id;
 
-    IoTUnit(int id) {
+    public IoTUnit(int id) {
         this.id = id;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
 
-    abstract void copyInfoToThis(IoTUnit unit);
+    public abstract void copyInfoToThis(IoTUnit unit);
 
     @Override
     public boolean equals(Object o) {

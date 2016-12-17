@@ -1,17 +1,19 @@
+package model;
+
 import java.util.Arrays;
 
-class Sensor extends IoTUnit{
+public class Sensor extends IoTUnit {
 
     private static SensorHeader sensorHeader = SensorHeader.getInstance();
 
     private String[] sensorValues;
 
-    Sensor(int id, String[] sensorValues) {
+    public Sensor(int id, String[] sensorValues) {
         super(id);
         this.sensorValues = sensorValues;
     }
 
-    String getValueOfField(SensorHeader.SensorField sensorField) {
+    public String getValueOfField(SensorHeader.SensorField sensorField) {
         int columnIndex = SensorHeader.SensorField.sensorFieldToColumnIndex(sensorField);
         if (columnIndex == -1) {
             return "error";
@@ -20,7 +22,7 @@ class Sensor extends IoTUnit{
     }
 
     @Override
-    void copyInfoToThis(IoTUnit unit) {
+    public void copyInfoToThis(IoTUnit unit) {
         if (unit instanceof Sensor) {
             sensorValues = ((Sensor) unit).sensorValues;
         }

@@ -1,13 +1,15 @@
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
 import ch.ethz.ssh2.StreamGobbler;
+import executors.ActionExecutorInterface;
+import model.Action;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-class TestClient implements ActionExecutorInterface {
+class SSHActionExecutor implements ActionExecutorInterface {
 
 
 

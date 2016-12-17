@@ -1,12 +1,16 @@
+package parsers;
+
+import parsers.CommandParser;
+
 import java.util.Optional;
 
-class SweCommandParser extends CommandParser {
+public class SweCommandParser extends CommandParser {
 
     private SweCommandParser(Builder builder) {
         super(builder);
     }
 
-    static Optional<CommandParser> SwedishCommandParserBuilder() {
+    public static Optional<CommandParser> commandParserBuilder() {
         Builder builder = new Builder();
         return builder
                 .setConditionWords(" när ", " om ")

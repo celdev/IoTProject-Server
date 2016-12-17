@@ -1,3 +1,5 @@
+package model;
+
 public enum State {
 
     ON("-n"),OFF("-f");

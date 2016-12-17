@@ -1,8 +1,13 @@
+package infohandlers;
+
+import executors.ActionExecutor;
+import model.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-class IoTSensorDeviceHandler {
+public class IoTSensorDeviceHandler {
 
     private List<Device> devices;
     private List<Sensor> sensors;
@@ -14,7 +19,7 @@ class IoTSensorDeviceHandler {
 
     }
 
-    static IoTSensorDeviceHandler getInstance() {
+    public static IoTSensorDeviceHandler getInstance() {
         if (instance == null) {
             instance = new IoTSensorDeviceHandler();
         }
@@ -53,7 +58,7 @@ class IoTSensorDeviceHandler {
         }
     }
 
-    String getDeviceAndSensorInfo() {
+    public String getDeviceAndSensorInfo() {
         getInfo();
         StringBuilder builder = new StringBuilder();
         devices.forEach(device -> builder.append(device.toString()).append("\n"));
@@ -98,7 +103,7 @@ class IoTSensorDeviceHandler {
         return new Sensor(id, cols);
     }
 
-    String getTemperature() {
+    public String getTemperature() {
         if (sensors == null) {
             getInfo();
         }

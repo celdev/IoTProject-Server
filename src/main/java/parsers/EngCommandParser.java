@@ -1,12 +1,16 @@
+package parsers;
+
+import parsers.CommandParser;
+
 import java.util.Optional;
 
-class EngCommandParser extends CommandParser {
+public class EngCommandParser extends CommandParser {
 
     private EngCommandParser(Builder builder) {
         super(builder);
     }
 
-    static Optional<CommandParser> EnglishCommandParserBuilder() {
+    public static Optional<CommandParser> commandParserBuilder() {
         Builder builder = new Builder();
         return builder
                 .setConditionWords(" when ", " if ")

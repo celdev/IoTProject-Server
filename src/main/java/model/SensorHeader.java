@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -22,7 +24,7 @@ public class SensorHeader {
         return Arrays.toString(headers);
     }
 
-    enum SensorField {
+    public enum SensorField {
 
         PROTOCOL("PROTOCOL"),
         MODEL("MODEL"),

@@ -1,4 +1,10 @@
-class ConditionThread extends Thread {
+package infohandlers;
+
+import executors.ActionExecutor;
+import executors.ActionExecutorInterface;
+import model.Condition;
+
+public class ConditionThread extends Thread {
 
     private static long idCounter = 0;
 
@@ -10,7 +16,7 @@ class ConditionThread extends Thread {
 
     private boolean alive;
 
-    ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface) {
+    public ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface) {
         this.id = idCounter++;
         this.condition = condition;
         this.threadHandlerInterface = threadHandlerInterface;
@@ -18,7 +24,7 @@ class ConditionThread extends Thread {
         start();
     }
 
-    ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface, ActionExecutorInterface actionExecutor) {
+    public ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface, ActionExecutorInterface actionExecutor) {
         this.id = idCounter++;
         this.condition = condition;
         this.threadHandlerInterface = threadHandlerInterface;
