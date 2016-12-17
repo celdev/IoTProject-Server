@@ -1,9 +1,8 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class IoTSensorDeviceHandler {
+class IoTSensorDeviceHandler {
 
     private List<Device> devices;
     private List<Sensor> sensors;
@@ -15,29 +14,24 @@ public class IoTSensorDeviceHandler {
 
     }
 
-    public static IoTSensorDeviceHandler getInstance() {
+    static IoTSensorDeviceHandler getInstance() {
         if (instance == null) {
             instance = new IoTSensorDeviceHandler();
         }
         return instance;
     }
 
-    public void getInfo() {
+    private void getInfo() {
         try {
             String result = ActionExecutor.getInstance().executeAction(GET_ACTION);
             parseDevice(result);
-            //System.out.println("\n\n\n\n\n");
-
             parseSensor(result);
-
-            //System.out.println("\n\n\n\n\n");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void updateDevices(List<Device> newInfo) {
+    private void updateDevices(List<Device> newInfo) {
         for (Device device : newInfo) {
             int index = devices.indexOf(device);
             if (index != -1) {
@@ -48,7 +42,7 @@ public class IoTSensorDeviceHandler {
         }
     }
 
-    public void updateSensors(List<Sensor> newInfo) {
+    private void updateSensors(List<Sensor> newInfo) {
         for (Sensor sensor : newInfo) {
             int index = sensors.indexOf(sensor);
             if (index != -1) {
@@ -59,7 +53,7 @@ public class IoTSensorDeviceHandler {
         }
     }
 
-    public String getDeviceAndSensorInfo() {
+    String getDeviceAndSensorInfo() {
         getInfo();
         StringBuilder builder = new StringBuilder();
         devices.forEach(device -> builder.append(device.toString()).append("\n"));
@@ -70,9 +64,7 @@ public class IoTSensorDeviceHandler {
     }
 
     private int parseNumberOfDevice(String line) {
-        //System.out.println("trying parse number of devices from line " + line);
         String intParse = line.substring(line.lastIndexOf(" ")).trim();
-        //System.out.println("Trying to parse int " + intParse);
         return Integer.parseInt(intParse);
     }
 
@@ -80,7 +72,6 @@ public class IoTSensorDeviceHandler {
         String[] devicePart = result.split("SENSORS:");
         String[] lines = devicePart[0].split("\n");
         int numberOfDevice = parseNumberOfDevice(lines[0]);
-        //System.out.println("Number of devices = " + numberOfDevice);
         List<Device> tempList = new ArrayList<>(numberOfDevice);
         for(int i = 1; i <= numberOfDevice; i++) {
             tempList.add(extractDevice(lines[i]));
@@ -90,29 +81,24 @@ public class IoTSensorDeviceHandler {
         } else {
             devices = new CopyOnWriteArrayList<>(tempList);
         }
-        //System.out.println("====Devices====");
-        //devices.forEach(System.out::println);
-        //System.out.println("====Devices====");
     }
 
     private Device extractDevice(String line) throws Exception {
         String[] cols = line.split("\t");
-        //System.out.println("trying to parse id " + cols[0]);
         int id = Integer.parseInt(cols[0]);
         return new Device(id, State.stringToState(cols[2]), cols[1]);
     }
 
-    private Sensor extractSensor(String line) throws Exception {
+    private Sensor extractSensor(String line) throws NumberFormatException {
         String[] cols = line.split("\t");
         for(int i = 0; i < cols.length; i++) {
             cols[i] = cols[i].trim();
         }
-        //System.out.println("trying to parse sensor id = " + cols[2]);
         int id = Integer.parseInt(cols[2]);
         return new Sensor(id, cols);
     }
 
-    public String getTemperature() {
+    String getTemperature() {
         if (sensors == null) {
             getInfo();
         }
@@ -127,9 +113,7 @@ public class IoTSensorDeviceHandler {
     private void parseSensor(String result) throws Exception {
         String sensorPart = result.split("SENSORS:")[1];
         String[] lines = sensorPart.split("\n");
-       // System.out.println("Sensor part = " + Arrays.toString(lines[3].split("\t")));
         int numberOfSensors = lines.length - 3;
-        //System.out.println("number of sensors = " + numberOfSensors);
         List<Sensor> tempSensors = new ArrayList<>(numberOfSensors);
         for(int i = 3; i < 3 + numberOfSensors; i++) {
             tempSensors.add(extractSensor(lines[i]));
@@ -139,14 +123,5 @@ public class IoTSensorDeviceHandler {
         } else {
             updateSensors(tempSensors);
         }
-        //System.out.println("====Sensors====");
-        //sensors.forEach(System.out::println);
-        //System.out.println("====Sensors====");
     }
-
-    /*public static void main(String[] args) {
-        TestClient.password = args[0];
-        getInstance().getInfo();
-    }*/
-
 }

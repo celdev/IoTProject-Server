@@ -13,7 +13,7 @@ class TestClient implements ActionExecutorInterface {
 
     private static final String hostname = "81.230.190.13";
     private static final String username = "pi";
-    public static String password = "";
+    private static String password = "";
 
 
     @Override
@@ -21,7 +21,7 @@ class TestClient implements ActionExecutorInterface {
         return remoteCall(action);
     }
 
-    public String remoteCall(Action action) {
+    private String remoteCall(Action action) {
         try {
             Connection conn = new Connection(hostname);
             conn.connect();

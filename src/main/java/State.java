@@ -2,7 +2,7 @@ public enum State {
 
     ON("-n"),OFF("-f");
 
-    private String argument;
+    private final String argument;
 
     State(String argument) {
         this.argument = argument;

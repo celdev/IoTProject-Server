@@ -1,9 +1,9 @@
-public class Device extends IoTUnit {
+class Device extends IoTUnit {
 
     private State deviceState;
     private String name;
 
-    public Device(int id, State deviceState, String name) {
+    Device(int id, State deviceState, String name) {
         super(id);
         this.deviceState = deviceState;
         this.name = name;

@@ -1,21 +1,21 @@
 public class Action {
 
-    public static final String TOOL_NAME = "tdtool";
-    private String command;
+    private static final String TOOL_NAME = "tdtool";
+    private final String command;
 
     public Action(Device device, State state) {
         this.command = TOOL_NAME + " " + state.getArgument() + " " + device.getId();
     }
 
-    public Action(int deviceID, State state) {
+    Action(int deviceID, State state) {
         this.command = TOOL_NAME + " " + state.getArgument() + " " + deviceID;
     }
 
-    public Action() {
+    Action() {
         this.command = TOOL_NAME + " -l";
     }
 
-    public String getCommand() {
+    String getCommand() {
         return command;
     }
 }

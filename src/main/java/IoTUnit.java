@@ -1,12 +1,12 @@
 abstract class IoTUnit {
 
-    private int id;
+    private final int id;
 
-    public IoTUnit(int id) {
+    IoTUnit(int id) {
         this.id = id;
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 

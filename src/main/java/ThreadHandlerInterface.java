@@ -1,4 +1,4 @@
-public interface ThreadHandlerInterface {
+interface ThreadHandlerInterface {
 
     void removeDeadThread(ConditionThread conditionThread);
 

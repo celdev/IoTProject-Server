@@ -1,21 +1,21 @@
-public class IoTInformationHandler {
+class IoTInformationHandler {
 
-    public static IoTInformationHandler instance;
-    public static final ThreadHandler threadHandler = ThreadHandler.getInstance();
+    private static IoTInformationHandler instance;
+    private static final ThreadHandler threadHandler = ThreadHandler.getInstance();
 
-    public static final IoTSensorDeviceHandler iotSensorDeviceHandler = IoTSensorDeviceHandler.getInstance();
+    private static final IoTSensorDeviceHandler iotSensorDeviceHandler = IoTSensorDeviceHandler.getInstance();
 
     private IoTInformationHandler() {
     }
 
-    public static IoTInformationHandler getInstance() {
+    static IoTInformationHandler getInstance() {
         if (instance == null) {
             instance = new IoTInformationHandler();
         }
         return instance;
     }
 
-    public String getInfo() {
+    String getInfo() {
         return iotSensorDeviceHandler.getDeviceAndSensorInfo() + "\n" +
                 threadHandler.getAllThreads();
     }

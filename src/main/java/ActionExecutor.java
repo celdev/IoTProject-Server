@@ -24,7 +24,7 @@ public class ActionExecutor implements ActionExecutorInterface {
             process.waitFor();
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line = "";
+            String line;
             StringBuilder output = new StringBuilder();
             while ((line = reader.readLine())!= null) {
                 output.append(line).append("\n");

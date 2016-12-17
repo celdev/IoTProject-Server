@@ -1,16 +1,15 @@
 import spark.Request;
 import spark.Response;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.Optional;
 
 import static spark.Spark.*;
 
 public class Server {
 
-    private CommandParser commandParser = CommandParser.getInstance();
-    public static final String ERROR_RESPONSE = "error";
-    public static final String OK_RESPONSE = "ok";
+    private CommandParserInterface commandParser;
+    static final String ERROR_RESPONSE = "error";
+    static final String OK_RESPONSE = "ok";
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -29,6 +28,27 @@ public class Server {
 
     private Server(int port) {
         port(port);
+        setParser("SE");
+    }
+
+    private void setParser(String language) {
+        Optional<CommandParser> optional;
+        switch (language) {
+            case "EN":
+                optional = EngCommandParser.EnglishCommandParserBuilder();
+                break;
+            case "SE":
+                optional = SweCommandParser.SwedishCommandParserBuilder();
+                break;
+            default:
+                optional = SweCommandParser.SwedishCommandParserBuilder();
+        }
+        if (optional.isPresent()) {
+            commandParser = optional.get();
+        } else {
+            System.out.println("Couldn't create command parser of language " + language);
+            stop();
+        }
     }
 
     private void setupRoutes() {

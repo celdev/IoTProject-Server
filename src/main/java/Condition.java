@@ -1,7 +1,7 @@
 abstract class Condition {
 
-    private String command;
-    private Action action;
+    private final String command;
+    private final Action action;
 
     public Condition(String command, Action action) {
         this.command = "[" + command + "]";

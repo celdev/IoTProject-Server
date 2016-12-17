@@ -1,14 +1,16 @@
-public class ConditionThread extends Thread {
+class ConditionThread extends Thread {
 
     private static long idCounter = 0;
 
-    private long id;
-    private Condition condition;
-    private boolean alive;
-    private ThreadHandlerInterface threadHandlerInterface;
-    private ActionExecutorInterface actionExecutor;
+    private final Condition condition;
+    private final ThreadHandlerInterface threadHandlerInterface;
+    private final ActionExecutorInterface actionExecutor;
 
-    public ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface) {
+    private final long id;
+
+    private boolean alive;
+
+    ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface) {
         this.id = idCounter++;
         this.condition = condition;
         this.threadHandlerInterface = threadHandlerInterface;
@@ -16,7 +18,7 @@ public class ConditionThread extends Thread {
         start();
     }
 
-    public ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface, ActionExecutorInterface actionExecutor) {
+    ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface, ActionExecutorInterface actionExecutor) {
         this.id = idCounter++;
         this.condition = condition;
         this.threadHandlerInterface = threadHandlerInterface;

@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SensorHeader {
@@ -23,7 +22,7 @@ public class SensorHeader {
         return Arrays.toString(headers);
     }
 
-    public enum SensorField {
+    enum SensorField {
 
         PROTOCOL("PROTOCOL"),
         MODEL("MODEL"),
@@ -34,7 +33,7 @@ public class SensorHeader {
         WIND("WIND"),
         LASTUPDATED("LAST_UPDATED");
 
-        private String head;
+        private final String head;
 
         SensorField(String head) {
             this.head = head;

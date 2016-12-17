@@ -1,4 +1,4 @@
-public interface ActionExecutorInterface {
+interface ActionExecutorInterface {
 
     String executeAction(Action action) throws Exception;
 
