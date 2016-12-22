@@ -4,8 +4,6 @@ import java.util.Arrays;
 
 public class Sensor extends IoTUnit {
 
-    private static SensorHeader sensorHeader = SensorHeader.getInstance();
-
     private String[] sensorValues;
 
     public Sensor(int id, String[] sensorValues) {
@@ -27,8 +25,6 @@ public class Sensor extends IoTUnit {
             sensorValues = ((Sensor) unit).sensorValues;
         }
     }
-
-
 
     @Override
     public String toString() {
