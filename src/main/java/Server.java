@@ -37,6 +37,7 @@ public class Server {
         switch (language) {
             case "TH":
                 optional = ThaiCommandParser.commandParserBuilder();
+                break;
             case "EN":
                 optional = EngCommandParser.commandParserBuilder();
                 break;
