@@ -4,13 +4,15 @@ import spark.Request;
 import spark.Response;
 import util.Constants;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static spark.Spark.*;
 
 public class Server {
 
-    private CommandParserInterface commandParser;
+    private Map<String,CommandParserInterface> commandParsers;
 
     public static void main(String[] args) {
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -29,34 +31,38 @@ public class Server {
 
     private Server(int port) {
         port(port);
-        setParser("SE");
+        createParsers();
     }
 
-    private void setParser(String language) {
-        Optional<CommandParser> optional;
-        switch (language) {
-            case "TH":
-                optional = ThaiCommandParser.commandParserBuilder();
-                break;
+    private void createParsers() {
+        commandParsers = new HashMap<>();
+        Optional<CommandParser> thaiParserOpt = ThaiCommandParser.commandParserBuilder();
+        thaiParserOpt.ifPresent(commandParser -> commandParsers.put("TH", commandParser));
+        Optional<CommandParser> swedishParserOpt = SweCommandParser.commandParserBuilder();
+        swedishParserOpt.ifPresent(commandParser -> commandParsers.put("SV", commandParser));
+        Optional<CommandParser> englishParserOpt = EngCommandParser.commandParserBuilder();
+        englishParserOpt.ifPresent(commandParser -> commandParsers.put("EN", commandParser));
+    }
+
+    private CommandParserInterface getCommandParserInterface(String lang) {
+        switch (lang) {
+            case "SV":
+            case "sv":
+                return commandParsers.get("SV");
             case "EN":
-                optional = EngCommandParser.commandParserBuilder();
-                break;
-            case "SE":
-                optional = SweCommandParser.commandParserBuilder();
-                break;
+            case "en":
+                return commandParsers.get("EN");
+            case "TH":
+            case "th":
+                return commandParsers.get("TH");
             default:
-                optional = SweCommandParser.commandParserBuilder();
-        }
-        if (optional.isPresent()) {
-            commandParser = optional.get();
-        } else {
-            System.out.println("Couldn't create command parser of language " + language);
-            stop();
+                return commandParsers.get("SV");
         }
     }
+
 
     private void setupRoutes() {
-        get("command/*", this::processVoiceCommand);
+        get(":lang/command/*", this::processVoiceCommand);
         get("get", this::processGet);
         get("test", (req, res) -> "ok");
     }
@@ -68,7 +74,7 @@ public class Server {
             return Constants.ERROR_RESPONSE;
         }
         response.type("text/plain");
-        return commandParser.parseCommand(command.toLowerCase().replace("_", " ").trim());
+        return getCommandParserInterface(request.params(":land")).parseCommand(command.toLowerCase().replace("_", " ").trim());
     }
 
     private Object processGet(Request request, Response response) {
