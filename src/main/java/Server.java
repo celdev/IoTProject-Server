@@ -62,19 +62,20 @@ public class Server {
 
 
     private void setupRoutes() {
-        get(":lang/command/*", this::processVoiceCommand);
+        get("/*/command/*", this::processVoiceCommand);
         get("get", this::processGet);
         get("test", (req, res) -> "ok");
     }
 
     private Object processVoiceCommand(Request request, Response response) {
-        String command = request.splat()[0];
+        String lang = request.splat()[0];
+        String command = request.splat()[1];
         System.out.println("got command " + command);
         if (command == null || command.trim().isEmpty()) {
             return Constants.ERROR_RESPONSE;
         }
         response.type("text/plain");
-        return getCommandParserInterface(request.params(":land")).parseCommand(command.toLowerCase().replace("_", " ").trim());
+        return getCommandParserInterface(lang).parseCommand(command.toLowerCase().replace("_", " ").trim());
     }
 
     private Object processGet(Request request, Response response) {

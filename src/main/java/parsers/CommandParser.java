@@ -59,7 +59,7 @@ public class CommandParser implements CommandParserInterface {
                     e.printStackTrace();
                 }
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                System.out.println("Error couldn't extract device from command");
                 return Constants.ERROR_RESPONSE;
             }
         }
@@ -117,8 +117,10 @@ public class CommandParser implements CommandParserInterface {
                     return "ok";
                 }
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                System.out.println("Error: couldn't extract required information from the command");
             }
+        } else {
+            System.out.println("Error: couldn't extract state from command");
         }
         return Constants.ERROR_RESPONSE;
     }
@@ -136,7 +138,7 @@ public class CommandParser implements CommandParserInterface {
                 return parseConditionCommand(command);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: couldn't extract command type from command");
         }
         return Constants.ERROR_RESPONSE;
     }
