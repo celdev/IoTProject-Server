@@ -2,6 +2,9 @@ package parsers;
 
 import java.util.Optional;
 
+/** This class contains the method for building and returning an
+ *  Optional CommandParser for the Thai language
+ * */
 public class ThaiCommandParser extends CommandParser {
 
     private ThaiCommandParser(Builder builder) {
@@ -16,7 +19,7 @@ public class ThaiCommandParser extends CommandParser {
                 .setOffWords("ปิด")
                 .setNameOfUnits("ไฟ", "ความร้อน")
                 .setIfWord("ถ้า")
-                .setEqualWords("น้อย", "มาก", "เป็น")
+                .setComparisonWords("น้อย", "มาก", "เป็น")
                 .build();
     }
 }

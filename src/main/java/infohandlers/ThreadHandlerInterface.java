@@ -1,8 +1,6 @@
 package infohandlers;
 
-import infohandlers.ConditionThread;
-
-public interface ThreadHandlerInterface {
+interface ThreadHandlerInterface {
 
     void removeDeadThread(ConditionThread conditionThread);
 

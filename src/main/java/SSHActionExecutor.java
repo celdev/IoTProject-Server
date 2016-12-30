@@ -9,13 +9,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+
+/** This class contains an ActionExecutor that enables the web server
+ *  to run locally and SSH-ing into the IoT-gateway to execute the commands
+ *
+ *  This makes it possible to avoid having to package and re-upload the jar file
+ *  in every new build
+ * */
 class SSHActionExecutor implements ActionExecutorInterface {
 
-
-
-    private static final String hostname = "81.230.190.13";
-    private static final String username = "pi";
-    private static String password = "";
+    private static final String hostname = "INSERT_RASPBERRY_PI_IP";
+    private static final String username = "RASPBERRY_PI_USERNAME";
+    private static final String password = "RASPBERRY_PI_PASSWORD";
 
 
     @Override
@@ -23,6 +28,9 @@ class SSHActionExecutor implements ActionExecutorInterface {
         return remoteCall(action);
     }
 
+    /** Executes the action remotely by SSH-ing into the
+     *  Raspberry PI using the hostname, username and password defined above
+     * */
     private String remoteCall(Action action) {
         try {
             Connection conn = new Connection(hostname);

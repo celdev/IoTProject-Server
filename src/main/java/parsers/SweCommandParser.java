@@ -1,9 +1,11 @@
 package parsers;
 
-import parsers.CommandParser;
-
 import java.util.Optional;
 
+
+/** This class contains the method for building and returning an
+ *  Optional CommandParser for the Swedish language
+ * */
 public class SweCommandParser extends CommandParser {
 
     private SweCommandParser(Builder builder) {
@@ -18,7 +20,7 @@ public class SweCommandParser extends CommandParser {
                 .setOffWords("stäng av", "släck")
                 .setNameOfUnits("lampa", "värme")
                 .setIfWord(" om ")
-                .setEqualWords(" mindre ", " mer ", " är ")
+                .setComparisonWords(" mindre ", " mer ", " är ")
                 .build();
     }
 }

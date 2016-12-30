@@ -4,7 +4,7 @@ import executors.ActionExecutor;
 import executors.ActionExecutorInterface;
 import model.Condition;
 
-public class ConditionThread extends Thread {
+class ConditionThread extends Thread {
 
     private static long idCounter = 0;
 
@@ -16,7 +16,7 @@ public class ConditionThread extends Thread {
 
     private boolean alive;
 
-    public ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface) {
+    ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface) {
         this.id = idCounter++;
         this.condition = condition;
         this.threadHandlerInterface = threadHandlerInterface;
@@ -24,7 +24,7 @@ public class ConditionThread extends Thread {
         start();
     }
 
-    public ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface, ActionExecutorInterface actionExecutor) {
+    ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface, ActionExecutorInterface actionExecutor) {
         this.id = idCounter++;
         this.condition = condition;
         this.threadHandlerInterface = threadHandlerInterface;

@@ -1,5 +1,14 @@
 package model;
 
+/** This enum represents the state that the IoT devices can have
+ *  It's either ON or OFF
+ *
+ *  each of the values in the enum have a argument which is the
+ *  argument used in tdtool to make a device get that state
+ *
+ *  -n DEVICE_ID will make the devide turn on
+ *
+ * */
 public enum State {
 
     ON("-n"),OFF("-f");
@@ -14,6 +23,10 @@ public enum State {
         return argument;
     }
 
+    /** Returns ON or OFF depending on the String passed as a parameter
+     *  if the parameter isn't ON or OFF (case insensitive)
+     *  an exception will be thrown
+     * */
     public static State stringToState(String str) throws Exception{
         str = str.toLowerCase();
         if (str.equals("on")) {

@@ -31,17 +31,9 @@ public class ThreadHandler implements ThreadHandlerInterface {
         threadSet.add(new ConditionThread(condition, this));
     }
 
-    public void addNewConditionThread(Condition condition, ActionExecutorInterface actionExecutorInterface) {
-        threadSet.add(new ConditionThread(condition, this, actionExecutorInterface));
-    }
-
-
     @Override
     public void removeDeadThread(ConditionThread conditionThread) {
         threadSet.remove(conditionThread);
     }
-
-
-
 
 }

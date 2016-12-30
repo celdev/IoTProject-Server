@@ -4,7 +4,7 @@ public abstract class IoTUnit {
 
     private final int id;
 
-    public IoTUnit(int id) {
+    IoTUnit(int id) {
         this.id = id;
     }
 

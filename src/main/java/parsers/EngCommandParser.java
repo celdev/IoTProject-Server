@@ -2,6 +2,10 @@ package parsers;
 
 import java.util.Optional;
 
+
+/** This class contains the method for building and returning an
+ *  Optional CommandParser for the English language
+ * */
 public class EngCommandParser extends CommandParser {
 
     private EngCommandParser(Builder builder) {
@@ -16,7 +20,7 @@ public class EngCommandParser extends CommandParser {
                 .setOffWords("turn off")
                 .setNameOfUnits("light", "heat")
                 .setIfWord(" if ")
-                .setEqualWords(" less than ", "greater than", " is ")
+                .setComparisonWords(" less than ", "greater than", " is ")
                 .build();
     }
 }
