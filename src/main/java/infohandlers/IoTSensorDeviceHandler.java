@@ -14,9 +14,14 @@ public class IoTSensorDeviceHandler {
 
     private static final Action GET_ACTION = new Action();
 
-    private static IoTSensorDeviceHandler instance;
-    private IoTSensorDeviceHandler() {
+    private static final long MS_BETWEEN_UPDATE = 30 * 1000;
 
+    private static IoTSensorDeviceHandler instance;
+    private GetInfoThread getInfoThread;
+
+    private IoTSensorDeviceHandler() {
+        getInfoThread = new GetInfoThread();
+        getInfoThread.start();
     }
 
     public static IoTSensorDeviceHandler getInstance() {
@@ -127,6 +132,29 @@ public class IoTSensorDeviceHandler {
             sensors = new CopyOnWriteArrayList<>(tempSensors);
         } else {
             updateSensors(tempSensors);
+        }
+    }
+
+
+    private class GetInfoThread extends Thread {
+
+        private boolean alive;
+
+        @Override
+        public void run() {
+            alive = true;
+            while (alive) {
+                getInfo();
+                try {
+                    sleep(MS_BETWEEN_UPDATE);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        private void kill() {
+            alive = false;
         }
     }
 }

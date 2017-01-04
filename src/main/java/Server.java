@@ -60,14 +60,12 @@ public class Server {
      *  CommandParser will be returned
      * */
     private CommandParserInterface getCommandParserInterface(String lang) {
+        lang = lang.toLowerCase();
         switch (lang) {
-            case "SV":
             case "sv":
                 return commandParsers.get("SV");
-            case "EN":
             case "en":
                 return commandParsers.get("EN");
-            case "TH":
             case "th":
                 return commandParsers.get("TH");
             default:
