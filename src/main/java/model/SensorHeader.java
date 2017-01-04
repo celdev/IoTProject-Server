@@ -3,6 +3,11 @@ package model;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+/** This class represents the "head" row of the sensor information from the
+ *  tdtool
+ *
+ *  The different header values are hard coded in an enum
+ * */
 public class SensorHeader {
 
     private static SensorHeader instance;
@@ -20,6 +25,8 @@ public class SensorHeader {
         return instance;
     }
 
+    /** Returns the headers
+     * */
     public String getHeaders() {
         return Arrays.toString(headers);
     }
@@ -41,6 +48,9 @@ public class SensorHeader {
             this.head = head;
         }
 
+        /** Converts a SensorField into an index
+         *  i.e. protocol = index 0
+         * */
         public static int sensorFieldToColumnIndex(SensorField sensorField) {
             for(int i = 0; i < values().length; i++) {
                 if (sensorField.equals(values()[i])) {
@@ -50,6 +60,8 @@ public class SensorHeader {
             return -1;
         }
 
+        /** Converts the head field of the enums into an array of String
+         * */
         private static String[] getHeaders() {
             return Stream.of(values()).map(sensorField -> sensorField.head).toArray(String[]::new);
         }
