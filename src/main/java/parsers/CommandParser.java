@@ -178,7 +178,7 @@ public class CommandParser implements CommandParserInterface {
                         }
                     };
                     ThreadHandler.getInstance().addNewConditionThread(condition1);
-                    return "ok";
+                    return Constants.OK_RESPONSE;
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: couldn't extract required information from the command");

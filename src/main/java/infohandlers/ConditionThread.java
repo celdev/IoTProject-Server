@@ -24,15 +24,6 @@ class ConditionThread extends Thread {
         start();
     }
 
-    ConditionThread(Condition condition, ThreadHandlerInterface threadHandlerInterface, ActionExecutorInterface actionExecutor) {
-        this.id = idCounter++;
-        this.condition = condition;
-        this.threadHandlerInterface = threadHandlerInterface;
-        this.actionExecutor = actionExecutor;
-        start();
-    }
-
-
     @Override
     public void run() {
         alive = true;
